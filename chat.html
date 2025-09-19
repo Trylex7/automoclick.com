@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .user {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .bot {
+            font-weight: bold;
+            color: green;
+        }
+
+        #inputArea {
+            margin-top: 10px;
+        }
+
+        #inputMessage {
+            width: 80%;
+            padding: 8px;
+        }
+
+        #sendBtn {
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="chatbox"></div>
+
+    <div id="inputArea">
+        <input type="text" id="inputMessage" placeholder="Écris un message..." />
+        <button id="sendBtn">Envoyer</button>
+    </div>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const inputMessage = document.getElementById('inputMessage');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function appendMessage(sender, text) {
+            const div = document.createElement('div');
+            div.classList.add('message');
+            div.innerHTML = `<span class="${sender}">${sender}:</span> ${text}`;
+            chatbox.appendChild(div);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const msg = inputMessage.value.trim();
+            if (!msg) return;
+            appendMessage('Vous', msg);
+            inputMessage.value = '';
+
+            fetch('chatbot.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msg })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.reply) {
+                        appendMessage('Bot', data.reply);
+                    } else {
+                        appendMessage('Bot', "Désolé, je n'ai pas compris.");
+                    }
+                })
+                .catch(() => {
+                    appendMessage('Bot', 'Erreur serveur, réessaie plus tard.');
+                });
+        });
+
+        // Envoi au clavier "Entrée"
+        inputMessage.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

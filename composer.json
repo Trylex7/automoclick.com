@@ -1,0 +1,12 @@
+{
+    "require": {
+        "dompdf/dompdf": "^3.1",
+        "stancer/stancer": "^2.0",
+        "firebase/php-jwt": "^6.11",
+        "setasign/fpdf": "^1.8",
+        "guzzlehttp/guzzle": "^7.9",
+        "twilio/sdk": "^8.7",
+        "matomo/device-detector": "^6.4",
+        "google/cloud-recaptcha-enterprise": "^2.1"
+    }
+}

@@ -1,0 +1,5 @@
+Contact: mailto:security@automoclick.com
+Encryption: https://automoclick.com/.well-known/automoclick_public_key.asc
+Acknowledgements: https://automoclick.com/security/acknowledgements.html
+Preferred-Languages: en, fr
+Policy: https://automoclick.com/security/policy.html

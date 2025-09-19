@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /config/
+Disallow: /vendor/
+Disallow: /pro-view/
+Disallow: /db/
+Disallow: /api/
+
+# Optionnel : autoriser le reste
+Allow: /
+Sitemap: https://automoclick.com/sitemap.xml

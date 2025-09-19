@@ -1,0 +1,1029 @@
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+a {
+  text-decoration: none;
+}
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #0a8d48; /* couleur principale */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  max-width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+#overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+#menu-toggle {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  position: relative;
+  display: none;
+}
+body {
+  margin: 0;
+  background-color: whitesmoke;
+  position: relative;
+  /* Pour que le pseudo-élément soit positionné par rapport au body */
+  /* Attention, all: unset enlève beaucoup de styles, vérifie que tu en as besoin */
+  /* on retire le background direct ici */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url(../img/bg-automoclick.jpg) repeat;
+  background-size: 30% auto;
+  /* largeur à 50%, hauteur automatique */
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.dropdown-container {
+  position: relative;
+  margin-left: 35%;
+  margin-top: 1.3%;
+  display: inline-block;
+
+}
+
+.dropdown-button {
+  background-color: white;
+  border: none;
+  padding: 8px 12px;
+  color: #000;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-button:hover {
+  background-color: #f0fdf4;
+}
+
+.dropdown-button .icon {
+  width: 16px;
+  height: 16px;
+  stroke: #16a34a;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.dropdown-menu .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #333;
+  font-family: sans-serif;
+  gap: 10px;
+  transition: 0.2s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #16a34a;
+  color: white;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+/* Badge stylé */
+#message-badge {
+  background: red;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+
+.discount {
+  margin-top: 5px;
+  color: #2ecc71;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  /* ← Centre horizontalement */
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+/* Quand le checkbox est coché */
+.switch input:checked+.slider {
+  background-color: #4CAF50;
+}
+
+.switch input:checked+.slider:before {
+  transform: translateX(24px);
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}
+
+.slogan {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.mot {
+  opacity: 0;
+  display: inline-block;
+  margin: 0 5px;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+}
+
+.rouge {
+  color: red;
+  animation-name: showMot1;
+  animation-delay: 0s;
+}
+
+.orange {
+  color: orange;
+  animation-name: showMot2;
+  animation-delay: 1s;
+}
+
+.vert {
+  color: green;
+  animation-name: showMot3;
+  animation-delay: 2s;
+}
+
+@keyframes showMot1 {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showMot2 {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showMot3 {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Header */
+header {
+  width: 100%;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+
+}
+
+.logo {
+  width: 9%;
+  vertical-align: top;
+}
+
+.header-link {
+  display: inline-block;
+  color: black;
+  padding: 15px 10px;
+  vertical-align: top;
+  margin-top: 1%;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.green {
+  color: #58b88a;
+}
+
+.left-btn {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 2%;
+  margin-left: 6%;
+}
+
+.header-link-left-btn {
+  color: white;
+  padding: 14px 35px;
+  border-radius: 26px;
+  background-color: black;
+  border: none;
+  font-size: 16px;
+  font-weight: bolder;
+  margin: 0px 15px;
+}
+
+.header-link:hover {
+  color: #58b88a;
+}
+
+.header-link-left-btn:hover {
+  background-color: #58b88a;
+  color: white;
+}
+
+/* accueil */
+
+.container-search {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin: 3rem 0;
+}
+
+.search-img {
+  width: 250px;
+  height: 250px;
+  margin-left: 20%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-text {
+  flex: 1 1 40%;
+  margin-left: 2%;
+  margin-top: 3%;
+  text-align: left;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.search-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-text p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.search-form {
+  flex: 1 1 55%;
+}
+
+.search-box {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-field .icon {
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+}
+
+.search-field input,
+.search-field select {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-box button {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-box button:hover {
+  background-color: #333;
+}
+
+.modern-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  color: #222;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' fill='none' stroke='%2358b88a' stroke-width='15' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.modern-select:focus {
+  outline: none;
+  border-color: #58b88a;
+  box-shadow: 0 0 0 3px rgba(88, 184, 138, 0.2);
+}
+
+.main {
+  margin-top: 25%;
+}
+
+.title {
+  margin-top: 2px;
+  font-size: 29px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.sub-title {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  font-size: 40px;
+}
+
+.offer-p {
+  text-align: center;
+  font-size: 22px;
+}
+
+.card-container {
+  text-align: center;
+}
+
+.card-presentation {
+  display: inline-block;
+  width: 350px;
+  margin-inline: 10%;
+  vertical-align: top;
+  text-align: center;
+}
+
+.img-presentation {
+  margin-left: 15%;
+  width: 250px;
+  border-radius: 180px;
+  clip-path: circle(39%);
+
+}
+
+.title-presentation {
+  font-size: 21px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+}
+
+.description-presentation {
+  font-size: 19px;
+  font-weight: 200;
+  font-family: "Roboto", sans-serif;
+}
+
+.container-pro {
+  width: 50%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  min-height: 350px;
+}
+
+.container-client {
+  text-align: center;
+  width: 50%;
+  background-color: #58b88a;
+  color: white;
+  min-height: 350px;
+}
+
+.container-pro:hover {
+  background-color: white;
+  color: black;
+}
+
+.container-client:hover {
+  background-color: grey;
+
+}
+
+
+
+.container-pro-client {
+  display: flex;
+  flex-wrap: wrap;
+  /* utile pour le responsive */
+  width: 100%;
+}
+
+.top {
+  display: inline-block;
+  vertical-align: top;
+
+}
+
+.title-p-c {
+
+  font-family: "Roboto", sans-serif;
+}
+
+.client-description {
+  font-size: 25px;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+}
+
+.pro-description {
+  font-size: 25px;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+}
+
+.client-btn {
+  position: relative;
+  top: 20%;
+  background-color: black;
+  color: white;
+  border-radius: 26px;
+  padding: 20px 35px;
+}
+
+.pro-btn {
+  position: relative;
+  top: 20%;
+  background-color: #58b88a;
+  color: white;
+  border-radius: 26px;
+  padding: 20px 35px;
+}
+
+/* Accueil */
+/* Abonnement */
+.abonnements {
+  margin-top: -5px;
+  background-color: whitesmoke;
+}
+
+.sub {
+  position: relative;
+  top: 25px;
+}
+
+.card-sub {
+  position: relative;
+  border-radius: 26px;
+  margin-top: 3%;
+  display: inline-block;
+  margin-inline: 3%;
+  width: 350px;
+  vertical-align: top;
+  min-height: 570px;
+  background-color: white;
+  color: black;
+  font-family: "Roboto", sans-serif;
+
+}
+
+.sub-description {
+  position: relative;
+  top: 15px;
+  height: 60px;
+}
+
+.card-title {
+  font-weight: 200;
+  margin-top: 5%;
+}
+
+section {
+  margin-top: 10%;
+
+}
+
+.subs-title {
+  position: relative;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 25px;
+  top: 15px;
+}
+
+.subs-title hr {
+  width: 10%;
+
+}
+
+.price {
+  font-weight: 100;
+  font-size: 26px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.option-sub {
+  margin-left: 15%;
+  text-align: left;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  vertical-align: text-top;
+  padding: 10px 5px;
+}
+
+.icon {
+  color: #58b88a;
+  vertical-align: top;
+}
+
+.red {
+  color: red;
+}
+
+.sub-btn {
+  position: relative;
+  top: 15px;
+  border-radius: 26px;
+  padding: 15px 20px;
+  color: white;
+  background-color: #58b88a;
+}
+
+.container-option {
+  margin-top: 5%;
+}
+
+/* Responsive pour tablettes (768px et moins) */
+@media (max-width: 1024px) {
+  /* body {
+    all: unset;
+    opacity: 0.1;
+    background: url(../img/bg-automoclick.jpg) repeat;
+    background-size: 200px auto;
+    background-position: center top;
+    background-color: whitesmoke;
+    z-index: -1;
+    pointer-events: none;
+  } */
+   #nav{
+    display: none;
+   }
+      #mobileSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* espace entre les liens */
+    color: #000;
+}
+
+#mobileSidebar .header-link,
+#mobileSidebar .header-link-left-btn,
+#mobileSidebar .dropdown-container {
+    display: block;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+   .left-btn{
+    display: block;
+   }
+   .header-link-left-btn{
+    display: block;
+   }
+   #nav{
+    display: none;
+   }
+  #menu-toggle {
+    display: block;
+  }
+.header-link {
+  display: block;
+}
+  .sidebar {
+    display: flex;
+  }
+  .dropdown-container {
+    margin-left: 10%;
+    margin-top: 1.5%;
+  }
+.header-link {
+  display: block;
+}
+  header {
+    font-size: 16px;
+  }
+
+  .logo {
+    width: 15%;
+  }
+
+  .header-link {
+    padding: 10px 6px;
+    font-size: 14px;
+  }
+
+  .header-link-left-btn {
+    padding: 10px 25px;
+    font-size: 14px;
+    margin: 0 8px;
+  }
+
+  .container-search {
+    flex-direction: column;
+    margin: 2rem 1rem 3rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .search-img {
+    width: 180px;
+    height: 180px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .search-text {
+    margin-left: 0;
+    margin-top: 1rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .search-form {
+    flex: 1 1 100%;
+  }
+
+  .search-box {
+    max-width: 100%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .sub-title {
+    font-size: 28px;
+  }
+
+  .offer-p {
+    font-size: 18px;
+  }
+
+  .card-presentation {
+    display: block;
+    width: 90%;
+    margin: 1rem auto;
+  }
+
+  .img-presentation {
+    margin-left: auto;
+    margin-right: auto;
+    width: 180px;
+    clip-path: circle(50%);
+  }
+
+  .container-pro-client {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .container-pro,
+  .container-client {
+    width: 90%;
+    min-height: 250px;
+    margin: 0 auto 1rem auto;
+  }
+  .client-description,
+.pro-description{
+  margin-bottom: 5%;
+}
+
+.client-btn,
+.pro-btn {
+  position: relative;
+  top: 0;
+  padding: 15px 25px;
+  margin-top: 25px; /* ou margin-bottom: 8px; selon ce que tu souhaites */
+}
+
+  .card-sub {
+    width: 90%;
+    margin-inline: auto;
+    min-height: auto;
+    margin-top: 2rem;
+  }
+
+  .option-sub {
+    margin-left: 5%;
+    font-size: 18px;
+  }
+
+  .subs-title {
+    font-size: 20px;
+  }
+
+  .price {
+    font-size: 22px;
+  }
+
+  .sub-btn {
+    padding: 12px 18px;
+  }
+}
+
+
+/* Responsive pour mobiles (480px et moins) */
+@media (max-width: 480px) {
+  /* body {
+    all: unset;
+    background: url(../img/bg-automoclick.jpg) repeat;
+    background-size: 200px auto;
+    background-position: center top;
+    background-color: whitesmoke;
+    opacity: 0.1;
+    z-index: -1;
+    pointer-events: none;
+  } */
+   #mobileSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* espace entre les liens */
+    color: #000;
+}
+
+#mobileSidebar .header-link,
+#mobileSidebar .header-link-left-btn,
+#mobileSidebar .dropdown-container {
+    display: block;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+   .left-btn{
+    display: block;
+   }
+   .header-link-left-btn{
+    display: block;
+   }
+   #nav{
+    display: none;
+   }
+  #menu-toggle {
+    display: block;
+  }
+.header-link {
+  display: block;
+}
+  .sidebar {
+    display: flex;
+  }
+
+  .dropdown-container {
+    margin-left: 5%;
+    margin-top: 1%;
+  }
+
+  header {
+    font-size: 14px;
+  }
+
+  .logo {
+    width: 25%;
+  }
+
+  .header-link {
+    display: block;
+    padding: 8px 5px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+
+  .header-link-left-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    margin: 5px 0;
+  }
+
+  .container-search {
+    margin: 1rem;
+    gap: 1rem;
+  }
+
+  .search-img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .search-text {
+    font-size: 0.9rem;
+  }
+
+  .search-box {
+    padding: 1rem 0.8rem;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .sub-title {
+    font-size: 22px;
+  }
+
+  .offer-p {
+    font-size: 16px;
+  }
+
+  .card-presentation {
+    width: 100%;
+    margin: 0 auto 1rem auto;
+  }
+
+  .img-presentation {
+    width: 200px;
+    clip-path: circle(50%);
+  }
+
+  .container-pro,
+  .container-client {
+    width: 95%;
+    min-height: 350px;
+    padding: 10px;
+  }
+.client-description,
+.pro-description{
+  margin-bottom: 10%;
+}
+.client-btn,
+.pro-btn {
+  padding: 12px 20px;
+  font-size: 14px;
+  
+}
+
+  .card-sub {
+    width: 95%;
+  }
+
+  .option-sub {
+    margin-left: 3%;
+    font-size: 16px;
+  }
+
+  .subs-title {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+
+  .sub-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+}
